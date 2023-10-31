@@ -1,0 +1,74 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: test
+spec:
+  ports:
+  - name: grpc-50051
+    port: 50051
+    targetPort: 50051
+  selector:
+    app: backend
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: backend
+    version: 1.0.0
+  name: backend
+  namespace: test
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+        version: 1.0.0
+    spec:
+      containers:
+      - env:
+        - name: SERVER_PORT
+          value: "50051"
+        image: levine824/backend:2345202-1698738296
+        name: backend
+        ports:
+        - containerPort: 50051
+          name: grpc
+        resources:
+          limits:
+            cpu: 400m
+            memory: 400Mi
+          requests:
+            cpu: 200m
+            memory: 200Mi
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: backend
+  namespace: test
+spec:
+  host: backend
+  subsets:
+  - labels:
+      version: 1.0.0
+    name: 1.0.0
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: backend
+  namespace: test
+spec:
+  hosts:
+  - backend
+  http:
+    route:
+    - destination:
+        host: backend
+        subset: 1.0.0
