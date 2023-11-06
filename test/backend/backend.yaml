@@ -16,7 +16,7 @@ kind: Deployment
 metadata:
   labels:
     app: backend
-    version: 0.1.0
+    version: 1.0.0
   name: backend
   namespace: test
 spec:
@@ -28,13 +28,13 @@ spec:
     metadata:
       labels:
         app: backend
-        version: 0.1.0
+        version: 1.0.0
     spec:
       containers:
       - env:
         - name: SERVER_PORT
           value: "50051"
-        image: levine824/backend:6547f06-1699269629
+        image: levine824/backend:d3f1a6e-1699282824
         name: backend
         ports:
         - containerPort: 50051
@@ -56,8 +56,8 @@ spec:
   host: backend
   subsets:
   - labels:
-      version: 0.1.0
-    name: 0.1.0
+      version: 1.0.0
+    name: 1.0.0
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -71,4 +71,4 @@ spec:
     route:
     - destination:
         host: backend
-        subset: 0.1.0
+        subset: 1.0.0
