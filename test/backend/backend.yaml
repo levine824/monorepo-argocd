@@ -34,7 +34,7 @@ spec:
       - env:
         - name: SERVER_PORT
           value: "50051"
-        image: levine824/backend:49d4172-1699261782
+        image: levine824/backend:6547f06-1699269629
         name: backend
         ports:
         - containerPort: 50051
