@@ -38,7 +38,7 @@ spec:
           value: backend
         - name: CLIENT_BACKEND_PORT
           value: "50051"
-        image: levine824/frontend:d3f1a6e-1699282824
+        image: levine824/frontend:618cb4f-1699284214
         name: frontend
         ports:
         - containerPort: 9080
